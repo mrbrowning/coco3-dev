@@ -39,12 +39,12 @@
 <h2>
 <a id="starting-mame" class="anchor" href="#starting-mame" aria-hidden="true"><span class="octicon octicon-link"></span></a>Starting MAME</h2>
 
-<p>For now, <code>cd</code> to ~/bin/mame so that mame knows where the roms dir is. Then::</p>
+<p>For now, <code>cd</code> to ~/bin/mame so that mame knows where the roms dir is. Then:</p>
 
 <pre><code>mame64 coco3
 </code></pre>
 
-<p>To run with a particular floppy image::</p>
+<p>To run with a particular floppy image:</p>
 
 <pre><code>mame64 coco3 -flop1 $FLOPPY_PATH
 </code></pre>
@@ -52,7 +52,7 @@
 <h2>
 <a id="assembling-6809-asm-to-binary" class="anchor" href="#assembling-6809-asm-to-binary" aria-hidden="true"><span class="octicon octicon-link"></span></a>Assembling 6809 ASM to Binary</h2>
 
-<p>Simple, using LWASM from the LWTOOLS package::</p>
+<p>Simple, using LWASM from the LWTOOLS package:</p>
 
 <pre><code>lwasm -9 -b $SOURCE_FILE --output=$TARGET_FILE
 </code></pre>
@@ -62,7 +62,7 @@
 <h2>
 <a id="disassembling-6809-binary" class="anchor" href="#disassembling-6809-binary" aria-hidden="true"><span class="octicon octicon-link"></span></a>Disassembling 6809 Binary</h2>
 
-<p>Using f9dasm, which is a little bit more permissive when it comes to reconstituting some of the funnier tricks you can do than MAME's own <code>unidasm</code> is::</p>
+<p>Using f9dasm, which is a little bit more permissive when it comes to reconstituting some of the funnier tricks you can do than MAME's own <code>unidasm</code> is:</p>
 
 <pre><code>f9dasm -nohex -noaddr $BINARY_FILE &gt; $TARGET_FILE
 </code></pre>
@@ -70,12 +70,12 @@
 <h2>
 <a id="creating-disk-images" class="anchor" href="#creating-disk-images" aria-hidden="true"><span class="octicon octicon-link"></span></a>Creating Disk Images</h2>
 
-<p>First, create the disk image::</p>
+<p>First, create the disk image:</p>
 
 <pre><code>imgtool create coco_jvc_rsdos $DISK_NAME
 </code></pre>
 
-<p>Then, add your intended files to the disk::</p>
+<p>Then, add your intended files to the disk:</p>
 
 <pre><code>imgtool put coco_jvc_rsdos $DISK_NAME $LOCAL_FILE_NAME $DISK_FILE_NAME --ftype=binary
 </code></pre>
@@ -83,17 +83,17 @@
 <h2>
 <a id="some-useful-coco-basic-commands" class="anchor" href="#some-useful-coco-basic-commands" aria-hidden="true"><span class="octicon octicon-link"></span></a>Some Useful CoCo BASIC Commands</h2>
 
-<p>To load a binary into RAM from disk (some appear to have some kind of automagical loading logic that will start to execute the program on loading, but mostly not)::</p>
+<p>To load a binary into RAM from disk (some appear to have some kind of automagical loading logic that will start to execute the program on loading, but mostly not):</p>
 
 <pre><code>LOADM "$DRIVESPEC:$FILENAME"
 </code></pre>
 
-<p>Where $DRIVESPEC is an integer in the range [0, 3], with 0 being the likely value if you've started the CoCo with flop1 mounted. You can be lazy and omit the drivespec if it's 0, as well as the file extension if it's <code>.BIN</code> since it's the default, and quotes auto-close at the end of commands, so if you're feeling lazy you can also type::</p>
+<p>Where $DRIVESPEC is an integer in the range [0, 3], with 0 being the likely value if you've started the CoCo with flop1 mounted. You can be lazy and omit the drivespec if it's 0, as well as the file extension if it's <code>.BIN</code> since it's the default, and quotes auto-close at the end of commands, so if you're feeling lazy you can also type:</p>
 
 <pre><code>LOADM"$FILENAME
 </code></pre>
 
-<p>To run the now-loaded binary::</p>
+<p>To run the now-loaded binary:</p>
 
 <pre><code>EXEC
 </code></pre>
