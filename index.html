@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <link href='https://fonts.googleapis.com/css?family=Chivo:900' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="stylesheets/github-dark.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="stylesheets/print.css" media="print">
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <title>Coco3-dev by mrbrowning</title>
+  </head>
+
+  <body>
+    <div id="container">
+      <div class="inner">
+
+        <header>
+          <h1>Coco3-dev</h1>
+          <h2>A quick guide for getting started with CoCo 3 development on OS X.</h2>
+        </header>
+
+        <section id="downloads" class="clearfix">
+          <a href="https://github.com/mrbrowning/coco3-dev/zipball/master" id="download-zip" class="button"><span>Download .zip</span></a>
+          <a href="https://github.com/mrbrowning/coco3-dev/tarball/master" id="download-tar-gz" class="button"><span>Download .tar.gz</span></a>
+          <a href="https://github.com/mrbrowning/coco3-dev" id="view-on-github" class="button"><span>View on GitHub</span></a>
+        </section>
+
+        <hr>
+
+        <section id="main_content">
+          <h1>
+<a id="getting-started" class="anchor" href="#getting-started" aria-hidden="true"><span class="octicon octicon-link"></span></a>Getting Started</h1>
+
+<p>This guide was written with MAME 0.162 as the active version. It works on Yosemite.</p>
+
+<h2>
+<a id="starting-mame" class="anchor" href="#starting-mame" aria-hidden="true"><span class="octicon octicon-link"></span></a>Starting MAME</h2>
+
+<p>For now, <code>cd</code> to ~/bin/mame so that mame knows where the roms dir is. Then::</p>
+
+<pre><code>mame64 coco3
+</code></pre>
+
+<p>To run with a particular floppy image::</p>
+
+<pre><code>mame64 coco3 -flop1 $FLOPPY_PATH
+</code></pre>
+
+<h2>
+<a id="assembling-6809-asm-to-binary" class="anchor" href="#assembling-6809-asm-to-binary" aria-hidden="true"><span class="octicon octicon-link"></span></a>Assembling 6809 ASM to Binary</h2>
+
+<p>Simple, using LWASM from the LWTOOLS package::</p>
+
+<pre><code>lwasm -9 -b $SOURCE_FILE --output=$TARGET_FILE
+</code></pre>
+
+<p>The <code>-9</code> flag stipulates 6809 strict compatibility mode, as opposed to allowing 6309 instructions. The <code>-b</code> flag compiles the source to the DECB binary format, compatible with Color BASIC's <code>LOADM</code> command.</p>
+
+<h2>
+<a id="disassembling-6809-binary" class="anchor" href="#disassembling-6809-binary" aria-hidden="true"><span class="octicon octicon-link"></span></a>Disassembling 6809 Binary</h2>
+
+<p>Using f9dasm, which is a little bit more permissive when it comes to reconstituting some of the funnier tricks you can do than MAME's own <code>unidasm</code> is::</p>
+
+<pre><code>f9dasm -nohex -noaddr $BINARY_FILE &gt; $TARGET_FILE
+</code></pre>
+
+<h2>
+<a id="creating-disk-images" class="anchor" href="#creating-disk-images" aria-hidden="true"><span class="octicon octicon-link"></span></a>Creating Disk Images</h2>
+
+<p>First, create the disk image::</p>
+
+<pre><code>imgtool create coco_jvc_rsdos $DISK_NAME
+</code></pre>
+
+<p>Then, add your intended files to the disk::</p>
+
+<pre><code>imgtool put coco_jvc_rsdos $DISK_NAME $LOCAL_FILE_NAME $DISK_FILE_NAME --ftype=binary
+</code></pre>
+
+<h2>
+<a id="some-useful-coco-basic-commands" class="anchor" href="#some-useful-coco-basic-commands" aria-hidden="true"><span class="octicon octicon-link"></span></a>Some Useful CoCo BASIC Commands</h2>
+
+<p>To load a binary into RAM from disk (some appear to have some kind of automagical loading logic that will start to execute the program on loading, but mostly not)::</p>
+
+<pre><code>LOADM "$DRIVESPEC:$FILENAME"
+</code></pre>
+
+<p>Where $DRIVESPEC is an integer in the range [0, 3], with 0 being the likely value if you've started the CoCo with flop1 mounted. You can be lazy and omit the drivespec if it's 0, as well as the file extension if it's <code>.BIN</code> since it's the default, and quotes auto-close at the end of commands, so if you're feeling lazy you can also type::</p>
+
+<pre><code>LOADM"$FILENAME
+</code></pre>
+
+<p>To run the now-loaded binary::</p>
+
+<pre><code>EXEC
+</code></pre>
+
+<p>To chain commands, separate with a colon. This requires closing your quotes, though.</p>
+
+<h2>
+<a id="coco-basic-keymappings" class="anchor" href="#coco-basic-keymappings" aria-hidden="true"><span class="octicon octicon-link"></span></a>CoCo BASIC Keymappings</h2>
+
+<p>Native to CoCo</p>
+
+<p>@ - "</p>
+
+<p>; - :</p>
+
+<h2>
+<a id="miscellaneous-environment-notes" class="anchor" href="#miscellaneous-environment-notes" aria-hidden="true"><span class="octicon octicon-link"></span></a>Miscellaneous Environment Notes</h2>
+
+<p>MAME requires the SDL2 runtime Framework.</p>
+
+<h2>
+<a id="links-to-external-projects" class="anchor" href="#links-to-external-projects" aria-hidden="true"><span class="octicon octicon-link"></span></a>Links to External Projects</h2>
+
+<p>MAME - <a href="http://sdlmame.lngn.net">http://sdlmame.lngn.net</a></p>
+
+<p>SDL - <a href="http://www.libsdl.org/download-2.0.php">http://www.libsdl.org/download-2.0.php</a></p>
+
+<p>LWTOOLS - <a href="http://lwtools.projects.l-w.ca">http://lwtools.projects.l-w.ca</a></p>
+
+<p>imgtool - <a href="http://www.mess.org/compiling_mess">http://www.mess.org/compiling_mess</a></p>
+
+<p>f9dasm - <a href="https://github.com/gordonjcp/f9dasm">https://github.com/gordonjcp/f9dasm</a></p>
+        </section>
+
+        <footer>
+          Coco3-dev is maintained by <a href="https://github.com/mrbrowning">mrbrowning</a><br>
+          This page was generated by <a href="https://pages.github.com">GitHub Pages</a>. Tactile theme by <a href="https://twitter.com/jasonlong">Jason Long</a>.
+        </footer>
+
+        
+      </div>
+    </div>
+  </body>
+</html>
